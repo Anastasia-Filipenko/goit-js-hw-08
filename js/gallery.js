@@ -86,13 +86,11 @@ const markup = images
 container.insertAdjacentHTML("beforeend", markup);
 
 const instance = basicLightbox.create(
-  ``,
+  `<img src="https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg" width="1100" height="640">`,
   {
     onShow: () => {
       document.addEventListener("keydown", closeModal);
     },
-  },
-  {
     onClose: () => {
       document.removeEventListener("keydown", closeModal);
     },
@@ -104,16 +102,14 @@ container.addEventListener("click", selectImage);
 function selectImage(event) {
   event.preventDefault();
 
-  const imageUrl = event.target.dataset.source;
-
-  if (event.target.nodeName !== "IMG") {
+  if (event.target.nodeName === "IMG") {
+    const imageUrl = event.target.dataset.source;
+    const element = instance.element();
+    element.innerHTML = `<img src="${imageUrl}" width="1100" height="640">`;
+    instance.show();
+  } else {
     return;
   }
-
-  const element = instance.element();
-  element.innerHTML = `<img src="${imageUrl}" width="1100" height="640">`;
-
-  instance.show();
 }
 
 function closeModal(event) {
