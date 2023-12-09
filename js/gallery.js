@@ -98,6 +98,7 @@ const instance = basicLightbox.create(
     },
   }
 );
+
 container.addEventListener("click", selectImage);
 
 function selectImage(event) {
