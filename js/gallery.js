@@ -85,34 +85,38 @@ const markup = images
 
 container.insertAdjacentHTML("beforeend", markup);
 
+const instance = basicLightbox.create(
+  ``,
+  {
+    onShow: () => {
+      document.addEventListener("keydown", closeModal);
+    },
+  },
+  {
+    onClose: () => {
+      document.removeEventListener("keydown", closeModal);
+    },
+  }
+);
 container.addEventListener("click", selectImage);
-
-let modal;
 
 function selectImage(event) {
   event.preventDefault();
 
-  if (event.target.tagName === "UL") {
+  const imageUrl = event.target.dataset.source;
+
+  if (event.target.nodeName !== "IMG") {
     return;
   }
-  if (event.target.tagName === "LI") {
-    const linkElement = event.target.querySelector(".gallery-link");
-    const imageUrl = linkElement.href;
 
-    modal = basicLightbox.create(`
-	<img
-      src="${imageUrl}"
-    />`);
-  }
+  const element = instance.element();
+  element.innerHTML = `<img src="${imageUrl}" width="1100" height="640">`;
 
-  modal.show();
-
-  document.addEventListener("keydown", closeModal);
+  instance.show();
 }
 
 function closeModal(event) {
   if (event.key === "Escape") {
-    modal.close();
+    instance.close();
   }
-  document.removeEventListener("keydown", closeModal);
 }

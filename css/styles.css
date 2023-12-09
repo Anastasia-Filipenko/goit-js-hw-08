@@ -12,9 +12,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.gallery-link {
-  pointer-events: none;
-}
 .gallery-item:hover .gallery-image {
   transform: scale(1.1);
 }
