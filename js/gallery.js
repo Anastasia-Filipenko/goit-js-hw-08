@@ -85,35 +85,36 @@ const markup = images
 
 container.insertAdjacentHTML("beforeend", markup);
 
-const instance = basicLightbox.create(
-  `<img src="https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg" width="1100" height="640">`,
-  {
-    onShow: () => {
-      document.addEventListener("keydown", closeModal);
-    },
-    onClose: () => {
-      document.removeEventListener("keydown", closeModal);
-    },
-  }
-);
-
 container.addEventListener("click", selectImage);
+let instance;
 
 function selectImage(event) {
   event.preventDefault();
 
   if (event.target.nodeName === "IMG") {
     const imageUrl = event.target.dataset.source;
-    const element = instance.element();
-    element.innerHTML = `<img src="${imageUrl}" width="1100" height="640">`;
+
+    instance = basicLightbox.create(
+      `<img src="${imageUrl}" width="1100" height="640">`,
+      {
+        onShow: (instance) => {
+          document.addEventListener("keydown", closeModal);
+          // instance.element().addEventListener("keydown", closeModal);
+        },
+        onClose: (instance) => {
+          document.removeEventListener("keydown", closeModal);
+          // instance.element().removeEventListener("keydown", closeModal);
+        },
+      }
+    );
+
     instance.show();
   } else {
     return;
   }
 }
-
-function closeModal(event) {
+const closeModal = (event) => {
   if (event.key === "Escape") {
     instance.close();
   }
-}
+};
